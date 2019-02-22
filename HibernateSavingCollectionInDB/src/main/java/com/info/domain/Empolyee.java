@@ -1,5 +1,6 @@
 package com.info.domain;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 @Entity
 @DynamicUpdate
 @Table(name="empolyee")
@@ -35,8 +39,10 @@ public class Empolyee {  // it is represent entity object
 	private Double emp_salary;
 
 	@ElementCollection
-	@JoinTable(name="address_table",joinColumns=@JoinColumn(name="emp_id"))
-	private Set<Address>   addressList=new HashSet<>();
+	@JoinTable(name="address_table",joinColumns=@JoinColumn(name="emp_id"))//it is represnt Jointable as will as Joincolumn name
+	@GenericGenerator(name = "sequence_gen", strategy = "sequence")// added primary key 
+	@CollectionId(columns = { @Column (name="address_id")}, generator = "sequence_gen", type = @Type(type = "int"))
+	private Collection<Address>   addressList=new HashSet<>();
 	
 	public Integer getEmp_Id() {
 		return emp_Id;
@@ -69,8 +75,12 @@ public class Empolyee {  // it is represent entity object
 		this.emp_salary = emp_salary;
 	}
 
-	public Set<Address> getAddressList() {
+	public Collection<Address> getAddressList() {
 		return addressList;
+	}
+
+	public void setAddressList(Collection<Address> addressList) {
+		this.addressList = addressList;
 	}
 
 	public void setAddressList(Set<Address> addressList) {
