@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -33,7 +35,8 @@ public class Empolyee {  // it is represent entity object
 	private Double emp_salary;
 
 	@ElementCollection
-	private Set<Address>   addressList=new HashSet<>();   //it is represnt as a value object or embedded object
+	@JoinTable(name="address_table",joinColumns=@JoinColumn(name="emp_id"))
+	private Set<Address>   addressList=new HashSet<>();
 	
 	public Integer getEmp_Id() {
 		return emp_Id;
